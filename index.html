@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyWithBash | Simplified Learning</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            /* Brand Colors */
+            --primary-blue: #3FB4F3; 
+            --primary-blue-hover: #2999D4;
+            --dark-blue: #0A192F;
+            --light-bg: #F8FAFC;
+            --white: #FFFFFF;
+            --text-dark: #334155;
+            --text-gray: #64748B;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* --- Header & Navigation --- */
+        header {
+            background-color: var(--white);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary-blue);
+            text-decoration: none;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+        }
+
+        .contact-buttons {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .nav-btn {
+            color: var(--white);
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            white-space: nowrap; 
+            font-size: 0.95rem;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .whatsapp-btn {
+            background-color: #25D366; 
+        }
+
+        .insta-btn {
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+        }
+
+        /* --- Global Layouts --- */
+        .container {
+            padding: 2rem 5%; 
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 2rem; 
+        }
+
+        .section-header h2 {
+            font-size: 2.2rem;
+            color: var(--dark-blue);
+        }
+
+        .section-header p {
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            margin-top: 0.5rem;
+        }
+
+        /* --- Dynamic View Containers --- */
+        #home-view, #class-view, #subject-view {
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            text-align: center;
+            padding: 3rem 5% 1.5rem 5%; 
+            background: linear-gradient(180deg, var(--white) 0%, var(--light-bg) 100%);
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            color: var(--dark-blue);
+            margin-bottom: 1rem;
+        }
+
+        .hero h1 span {
+            color: var(--primary-blue);
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-gray);
+            max-width: 650px;
+            margin: 0 auto; 
+        }
+
+        /* --- Cards & Grid --- */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+            border-top: 5px solid var(--primary-blue);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            color: var(--dark-blue);
+            margin-bottom: 1rem;
+        }
+
+        .card p {
+            color: var(--text-gray);
+            margin-bottom: 2rem;
+        }
+
+        .card-btn {
+            display: block;
+            background-color: var(--light-bg);
+            color: var(--primary-blue);
+            text-decoration: none;
+            padding: 0.8rem;
+            border-radius: 8px;
+            font-weight: 600;
+            border: 1px solid var(--primary-blue);
+            transition: all 0.3s ease;
+            width: 100%;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .card-btn:hover {
+            background-color: var(--primary-blue);
+            color: var(--white);
+        }
+
+        .card-btn-solid {
+            background-color: var(--primary-blue);
+            color: var(--white);
+        }
+
+        .card-btn-solid:hover {
+            background-color: var(--primary-blue-hover);
+        }
+
+        /* --- Internal Navigation (Back Buttons) --- */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: none;
+            border: none;
+            color: var(--primary-blue);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 1.5rem;
+            padding: 0.5rem 0;
+            transition: color 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            color: var(--primary-blue-hover);
+            text-decoration: underline;
+        }
+
+        /* --- Coming Soon Section --- */
+        .coming-soon-section {
+            background-color: var(--dark-blue);
+            color: var(--white);
+            padding: 4rem 5%;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .coming-soon-section h2 {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+            color: var(--primary-blue);
+        }
+
+        .coming-soon-section p {
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto 2.5rem auto;
+            color: #94A3B8;
+        }
+
+        .badge-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .badge {
+            background: rgba(63, 180, 243, 0.15);
+            color: var(--white);
+            border: 1px solid rgba(63, 180, 243, 0.3);
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        /* --- Footer --- */
+        footer {
+            background-color: #050F1D;
+            color: #94A3B8;
+            text-align: center;
+            padding: 3rem 5%;
+        }
+
+        .footer-socials {
+            margin: 1.5rem 0;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .footer-socials a {
+            color: var(--white);
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-socials a:hover {
+            color: var(--primary-blue);
+        }
+
+        footer p {
+            margin-bottom: 0.5rem;
+        }
+
+        footer a {
+            color: var(--primary-blue);
+            text-decoration: none;
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            .hero { padding: 2rem 5% 1rem 5%; }
+            .container { padding: 1.5rem 5%; }
+            .section-header { margin-bottom: 1.5rem; }
+            .hero h1 { font-size: 2.2rem; margin-bottom: 1rem; }
+            .hero p { font-size: 1.1rem; margin-bottom: 1rem; }
+            
+            .badge-container { gap: 0.5rem; }
+            .badge { font-size: 1rem; padding: 0.6rem 1.2rem; }
+
+            /* Fix Header Responsiveness */
+            header { padding: 1rem 5%; }
+            .logo { font-size: 1.2rem; gap: 8px; }
+            .logo-icon { font-size: 1.5rem; }
+            .btn-text { display: none; }
+            
+            .nav-btn {
+                padding: 0;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+            }
+            .nav-btn i { font-size: 1.2rem; }
+        }
+        
+        @media (max-width: 380px) {
+            .logo span:not(.logo-icon) { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo" onclick="showHome()">
+            <span class="logo-icon">🎓</span> <span>StudyWithBash</span>
+        </div>
+        
+        <div class="contact-buttons">
+            <a href="https://wa.me/2349078106774" class="nav-btn whatsapp-btn" target="_blank" rel="noopener noreferrer" title="Message us on WhatsApp">
+                <i class="fa-brands fa-whatsapp"></i>
+                <span class="btn-text">WhatsApp</span>
+            </a>
+            <a href="https://instagram.com/studywithbash" class="nav-btn insta-btn" target="_blank" rel="noopener noreferrer" title="Follow us on Instagram">
+                <i class="fa-brands fa-instagram"></i>
+                <span class="btn-text">Instagram</span>
+            </a>
+        </div>
+    </header>
+
+    <div id="home-view">
+        <section class="hero">
+            <h1>Ace Your Exams <span>One Subject at a Time</span></h1>
+            <p>No heavy jargon. No overwhelming textbooks. Just clear, step-by-step learning materials designed to help secondary school students crush their promo exams.</p>
+        </section>
+
+        <section class="container">
+            <div class="section-header">
+                <h2>Select Your Class</h2>
+                <p>Simplified breakdowns for Science, Commercial, and Arts departments.</p>
+            </div>
+
+            <div class="grid-container">
+                <div class="card" onclick="showClass('SS1')">
+                    <h3>SS1 Complete Guides</h3>
+                    <p>Bridge the gap between Junior and Senior school. Step-by-step foundational modules.</p>
+                    <button class="card-btn">View SS1 Subjects</button>
+                </div>
+                <div class="card" onclick="showClass('SS2')">
+                    <h3>SS2 Complete Guides</h3>
+                    <p>Master complex topics and prepare for the final stretch of senior secondary education.</p>
+                    <button class="card-btn">View SS2 Subjects</button>
+                </div>
+                <div class="card" onclick="showClass('SS3')">
+                    <h3>SS3 Complete Guides</h3>
+                    <p>Intensive revision materials designed to secure top grades in internal examinations.</p>
+                    <button class="card-btn">View SS3 Subjects</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="coming-soon-section">
+            <h2>External Exam Prep is Coming Soon</h2>
+            <p>Comprehensive, easy-to-understand prep materials for external examinations are currently in development. Keep your eyes peeled for the ultimate exam cheat codes.</p>
+            
+            <div class="badge-container">
+                <span class="badge">WAEC Prep</span>
+                <span class="badge">NECO Prep</span>
+                <span class="badge">GCE Materials</span>
+                <span class="badge">UTME / JAMB</span>
+                <span class="badge">Post-UTME Guides</span>
+            </div>
+        </section>
+    </div>
+
+    <div id="class-view" class="container" style="display: none;">
+        <button class="back-btn" onclick="showHome()">
+            <i class="fa-solid fa-arrow-left"></i> Back to Classes
+        </button>
+        
+        <div class="section-header">
+            <h2 id="class-title">Class Subjects</h2>
+            <p>Select a subject to view available terms.</p>
+        </div>
+
+        <div id="subjects-container" class="grid-container">
+            </div>
+    </div>
+
+    <div id="subject-view" class="container" style="display: none;">
+        <button class="back-btn" id="back-to-class-btn">
+            <i class="fa-solid fa-arrow-left"></i> Back to Subjects
+        </button>
+        
+        <div class="section-header">
+            <h2 id="subject-title">Subject Name</h2>
+            <p>Choose the term you want to study.</p>
+        </div>
+
+        <div class="grid-container">
+            <div class="card">
+                <h3>First Term</h3>
+                <p>Complete curriculum breakdown and study guide for the first term.</p>
+                <a id="term1-link" href="#" target="_blank" class="card-btn card-btn-solid">Get Material Now</a>
+            </div>
+            <div class="card">
+                <h3>Second Term</h3>
+                <p>Complete curriculum breakdown and study guide for the second term.</p>
+                <a id="term2-link" href="#" target="_blank" class="card-btn card-btn-solid">Get Material Now</a>
+            </div>
+            <div class="card">
+                <h3>Third Term</h3>
+                <p>Complete curriculum breakdown and study guide for the third term.</p>
+                <a id="term3-link" href="#" target="_blank" class="card-btn card-btn-solid">Get Material Now</a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-socials">
+            <a href="https://wa.me/2349078106774" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-whatsapp"></i></a>
+            <a href="https://instagram.com/studywithbash" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-instagram"></i></a>
+        </div>
+        <p>&copy; 2026 Bash Academy. All rights reserved.</p>
+        <p>Need support? Contact <a href="https://wa.me/2349078106774" target="_blank" rel="noopener noreferrer">0907 810 6774</a></p>
+    </footer>
+
+    <script>
+        const subjectsList = [
+            "Mathematics", "English Language", "Physics", 
+            "Chemistry", "Biology", "Economics", 
+            "Financial Accounting", "Commerce", "Government", "Literature-in-English"
+        ];
+
+        const homeView = document.getElementById('home-view');
+        const classView = document.getElementById('class-view');
+        const subjectView = document.getElementById('subject-view');
+
+        function showHome() {
+            homeView.style.display = 'block';
+            classView.style.display = 'none';
+            subjectView.style.display = 'none';
+            window.scrollTo(0, 0);
+        }
+
+        function showClass(className) {
+            homeView.style.display = 'none';
+            subjectView.style.display = 'none';
+            classView.style.display = 'block';
+            window.scrollTo(0, 0);
+
+            document.getElementById('class-title').innerText = className + " Subjects";
+
+            const container = document.getElementById('subjects-container');
+            container.innerHTML = ''; 
+
+            subjectsList.forEach(subject => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.onclick = () => showSubject(className, subject);
+                
+                card.innerHTML = `
+                    <h3>${subject}</h3>
+                    <p>Access notes, breakdowns, and guides for ${className} ${subject}.</p>
+                    <button class="card-btn">View Terms</button>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function showSubject(className, subjectName) {
+            classView.style.display = 'none';
+            subjectView.style.display = 'block';
+            window.scrollTo(0, 0);
+
+            document.getElementById('subject-title').innerText = `${className} - ${subjectName}`;
+
+            const backBtn = document.getElementById('back-to-class-btn');
+            backBtn.onclick = () => showClass(className);
+
+            document.getElementById('term1-link').href = "https://selfany.com/your-store-link"; 
+            document.getElementById('term2-link').href = "https://selfany.com/your-store-link";
+            document.getElementById('term3-link').href = "https://selfany.com/your-store-link";
+        }
+    </script>
+</body>
+</html>
