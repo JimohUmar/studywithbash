@@ -214,6 +214,14 @@
             background-color: var(--primary-blue-hover);
         }
 
+        .card-btn.disabled {
+            background-color: #E2E8F0;
+            color: #64748B;
+            border-color: #CBD5E1;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
         /* --- Internal Navigation (Back Buttons) --- */
         .back-btn {
             display: inline-flex;
@@ -433,18 +441,43 @@
             <div class="card">
                 <h3>First Term</h3>
                 <p>Complete curriculum breakdown and study guide for the first term.</p>
-                <a id="term1-link" href="#" target="_blank" class="card-btn card-btn-solid">Coming Soon</a>
+                <a id="term1-link" href="#" target="_blank" class="card-btn card-btn-solid">Get Material Now</a>
             </div>
             <div class="card">
                 <h3>Second Term</h3>
                 <p>Complete curriculum breakdown and study guide for the second term.</p>
-                <a id="term2-link" href="#" target="_blank" class="card-btn card-btn-solid">Coming Soon</a>
+                <a id="term2-link" href="#" target="_blank" class="card-btn card-btn-solid">Get Material Now</a>
             </div>
             <div class="card">
                 <h3>Third Term</h3>
                 <p>Complete curriculum breakdown and study guide for the third term.</p>
                 <a id="term3-link" href="#" target="_blank" class="card-btn card-btn-solid">Get Material Now</a>
             </div>
+        </div>
+    </div>
+
+    <div id="preview-view" class="container" style="display: none;">
+        <button class="back-btn" id="back-to-term-btn">
+            <i class="fa-solid fa-arrow-left"></i> Back to Terms
+        </button>
+
+        <div class="section-header">
+            <h2 id="preview-title">Preview Materials</h2>
+            <p id="preview-description">Preview a few sample pages before you pay to unlock the full content.</p>
+        </div>
+
+        <div class="card" style="padding: 1rem;">
+            <h3>PDF Preview</h3>
+            <p>Browse the preview of the Mathematics third term PDF here.</p>
+            <div style="border: 1px solid #CBD5E1; border-radius: 16px; overflow: hidden; margin-top: 1rem;">
+                <embed id="preview-pdf" src="S.S.S%201%20(3).pdf" type="application/pdf" width="100%" height="600px" />
+            </div>
+            <p style="margin-top: 1rem; color: #475569;">If the preview doesn't load, click below to open the PDF in a new tab.</p>
+            <a id="pdf-open-link" href="S.S.S%201%20(3).pdf" target="_blank" class="card-btn" style="margin-top: 0.5rem; display: inline-block; width: auto;">Open PDF Preview</a>
+        </div>
+
+        <div style="text-align: center; margin-top: 2rem;">
+            <a id="pay-button" href="https://selfany.com/your-store-link" target="_blank" class="card-btn card-btn-solid">Pay to Read More</a>
         </div>
     </div>
 
@@ -467,17 +500,22 @@
         const homeView = document.getElementById('home-view');
         const classView = document.getElementById('class-view');
         const subjectView = document.getElementById('subject-view');
+        const previewView = document.getElementById('preview-view');
+        let currentClassName = '';
+        let currentSubjectName = '';
 
         function showHome() {
             homeView.style.display = 'block';
             classView.style.display = 'none';
             subjectView.style.display = 'none';
+            previewView.style.display = 'none';
             window.scrollTo(0, 0);
         }
 
         function showClass(className) {
             homeView.style.display = 'none';
             subjectView.style.display = 'none';
+            previewView.style.display = 'none';
             classView.style.display = 'block';
             window.scrollTo(0, 0);
 
@@ -501,8 +539,11 @@
         }
 
         function showSubject(className, subjectName) {
+            currentClassName = className;
+            currentSubjectName = subjectName;
             classView.style.display = 'none';
             subjectView.style.display = 'block';
+            previewView.style.display = 'none';
             window.scrollTo(0, 0);
 
             document.getElementById('subject-title').innerText = `${className} - ${subjectName}`;
@@ -510,9 +551,79 @@
             const backBtn = document.getElementById('back-to-class-btn');
             backBtn.onclick = () => showClass(className);
 
-            document.getElementById('term1-link').href = "https://selfany.com/your-store-link"; 
-            document.getElementById('term2-link').href = "https://selfany.com/your-store-link";
-            document.getElementById('term3-link').href = "https://selfany.com/your-store-link";
+            const term1Link = document.getElementById('term1-link');
+            const term2Link = document.getElementById('term2-link');
+            const term3Link = document.getElementById('term3-link');
+
+            function setComingSoon(link) {
+                link.classList.add('disabled');
+                link.href = '#';
+                link.removeAttribute('target');
+                link.innerText = 'Coming Soon';
+                link.onclick = null;
+            }
+
+            function setAvailable(link) {
+                link.classList.remove('disabled');
+                link.href = '#';
+                link.removeAttribute('target');
+                link.innerText = 'Get Material Now';
+                link.onclick = (e) => {
+                    e.preventDefault();
+                    showPreview(className, subjectName, 'Third Term');
+                };
+            }
+
+            setComingSoon(term1Link);
+            setComingSoon(term2Link);
+            setComingSoon(term3Link);
+
+            if (subjectName === 'Mathematics') {
+                setAvailable(term3Link);
+            }
+        }
+
+        function getMathPdfFile(className) {
+            const files = {
+                SS1: 'S.S.S 1 .pdf',
+                SS2: 'S.S.S 2.pdf',
+                SS3: 'S.S.S 3 .pdf'
+            };
+            return files[className] ? encodeURI(files[className]) : null;
+        }
+
+        function showPreview(className, subjectName, termName) {
+            classView.style.display = 'none';
+            subjectView.style.display = 'none';
+            previewView.style.display = 'block';
+            window.scrollTo(0, 0);
+
+            document.getElementById('preview-title').innerText = `${className} - ${subjectName} (${termName}) Preview`;
+            document.getElementById('preview-description').innerText = 'Review a few sample pages before paying to unlock the full material.';
+
+            const previewPdf = document.getElementById('preview-pdf');
+            const pdfOpenLink = document.getElementById('pdf-open-link');
+            const pdfFile = getMathPdfFile(className);
+
+            if (pdfFile) {
+                previewPdf.src = pdfFile;
+                pdfOpenLink.href = pdfFile;
+            } else {
+                previewPdf.src = '';
+                pdfOpenLink.href = '#';
+            }
+
+            const backBtn = document.getElementById('back-to-term-btn');
+            backBtn.onclick = () => showSubject(className, subjectName);
+
+            const payButton = document.getElementById('pay-button');
+            const payLinks = {
+                SS1: 'https://selfany.com/MATHSSS1THIRDTERM',
+                SS2: 'https://selfany.com/SSS2THIRDTERM',
+                SS3: 'https://selfany.com/MATHSSS3THIRDTERM'
+            };
+            payButton.href = payLinks[className] || 'https://selfany.com/your-store-link';
+            payButton.target = '_blank';
         }
     </script>
 </body>
