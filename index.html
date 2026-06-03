@@ -470,10 +470,10 @@
             <h3>PDF Preview</h3>
             <p>Browse the preview of the Mathematics third term PDF here.</p>
             <div style="border: 1px solid #CBD5E1; border-radius: 16px; overflow: hidden; margin-top: 1rem;">
-                <embed id="preview-pdf" src="S.S.S%201%20(3).pdf" type="application/pdf" width="100%" height="600px" />
+                <embed id="preview-pdf" src="previewpdf.pdf" type="application/pdf" width="100%" height="600px" />
             </div>
             <p style="margin-top: 1rem; color: #475569;">If the preview doesn't load, click below to open the PDF in a new tab.</p>
-            <a id="pdf-open-link" href="S.S.S%201%20(3).pdf" target="_blank" class="card-btn" style="margin-top: 0.5rem; display: inline-block; width: auto;">Open PDF Preview</a>
+            <a id="pdf-open-link" href="previewpdf.pdf" target="_blank" class="card-btn" style="margin-top: 0.5rem; display: inline-block; width: auto;">Open PDF Preview</a>
         </div>
 
         <div style="text-align: center; margin-top: 2rem;">
@@ -603,15 +603,10 @@
 
             const previewPdf = document.getElementById('preview-pdf');
             const pdfOpenLink = document.getElementById('pdf-open-link');
-            const pdfFile = getMathPdfFile(className);
+            const previewFile = 'previewpdf.pdf';
 
-            if (pdfFile) {
-                previewPdf.src = pdfFile;
-                pdfOpenLink.href = pdfFile;
-            } else {
-                previewPdf.src = '';
-                pdfOpenLink.href = '#';
-            }
+            previewPdf.src = previewFile;
+            pdfOpenLink.href = previewFile;
 
             const backBtn = document.getElementById('back-to-term-btn');
             backBtn.onclick = () => showSubject(className, subjectName);
