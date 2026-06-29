@@ -578,7 +578,7 @@
             setComingSoon(term2Link);
             setComingSoon(term3Link);
 
-            if (subjectName === 'Mathematics' && className !== 'SS3') {
+            if (subjectName === 'Mathematics') {
                 setAvailable(term3Link);
             }
         }
@@ -603,7 +603,11 @@
 
             const previewPdf = document.getElementById('preview-pdf');
             const pdfOpenLink = document.getElementById('pdf-open-link');
-            const previewFile = 'previewpdf.pdf';
+            const previewFiles = {
+                SS1: 'SSS1.PREVIEW.pdf',
+                SS2: 'SSS2.PREVIEW.pdf'
+            };
+            const previewFile = previewFiles[className] || 'previewpdf.pdf';
 
             previewPdf.src = previewFile;
             pdfOpenLink.href = previewFile;
@@ -613,8 +617,8 @@
 
             const payButton = document.getElementById('pay-button');
             const payLinks = {
-                SS1: 'https://selfany.com/SS1',
-                SS2: 'https://selfany.com/SS2',
+                SS1: 'https://selfany.com/MATHSSS1THIRDTERM',
+                SS2: 'https://selfany.com/SSS2THIRDTERM',
                 SS3: 'https://selfany.com/MATHSSS3THIRDTERM'
             };
             payButton.href = payLinks[className] || 'https://selfany.com/your-store-link';
